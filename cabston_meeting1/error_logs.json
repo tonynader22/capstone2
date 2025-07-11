@@ -1,0 +1,86 @@
+[
+  {
+    "timestamp": "2025-07-09 15:48:20",
+    "error_type": "AudioProcessing",
+    "message": "فشل معالجة الملف الصوتي",
+    "details": "[WinError 3] The system cannot find the path specified: 'audio_cache\\\\f0'"
+  },
+  {
+    "timestamp": "2025-07-09 15:48:21",
+    "error_type": "Processing",
+    "message": "فشل معالجة الطلب",
+    "details": "name 'tiktoken' is not defined"
+  },
+  {
+    "timestamp": "2025-07-09 16:13:38",
+    "error_type": "AudioValidation",
+    "message": "فشل التحقق من صحة الملف الصوتي",
+    "details": "name 'AudioSegment' is not defined"
+  },
+  {
+    "timestamp": "2025-07-09 16:13:38",
+    "error_type": "AudioOptimization",
+    "message": "فشل تحسين الصوت",
+    "details": "الملف الصوتي غير صالح"
+  },
+  {
+    "timestamp": "2025-07-09 16:13:38",
+    "error_type": "AudioValidation",
+    "message": "فشل التحقق من صحة الملف الصوتي",
+    "details": "name 'AudioSegment' is not defined"
+  },
+  {
+    "timestamp": "2025-07-09 16:13:39",
+    "error_type": "Processing",
+    "message": "فشل معالجة الطلب",
+    "details": "name 'tiktoken' is not defined"
+  },
+  {
+    "timestamp": "2025-07-09 16:24:55",
+    "error_type": "Summarization",
+    "message": "فشل في التلخيص",
+    "details": "فشل الاتصال بـ Groq API: 401 Client Error: Unauthorized for url: https://api.groq.com/openai/v1/chat/completions"
+  },
+  {
+    "timestamp": "2025-07-09 16:27:04",
+    "error_type": "Summarization",
+    "message": "فشل في التلخيص",
+    "details": "فشل الاتصال بـ Groq API: 401 Client Error: Unauthorized for url: https://api.groq.com/openai/v1/chat/completions"
+  },
+  {
+    "timestamp": "2025-07-09 23:27:31",
+    "error_type": "SpeechRecognition",
+    "message": "فشل التعرف على الكلام",
+    "details": "لم يتم التعرف على أي نص"
+  },
+  {
+    "timestamp": "2025-07-09 23:29:20",
+    "error_type": "Summarization",
+    "message": "فشل في التلخيص",
+    "details": "فشل الاتصال بـ Groq API: 401 Client Error: Unauthorized for url: https://api.groq.com/openai/v1/chat/completions"
+  },
+  {
+    "timestamp": "2025-07-11 15:45:44",
+    "error_type": "AudioProcessing",
+    "message": "فشل معالجة الملف الصوتي",
+    "details": "name 'transcribe_audio' is not defined"
+  },
+  {
+    "timestamp": "2025-07-11 15:54:13",
+    "error_type": "AudioProcessing",
+    "message": "فشل معالجة الملف الصوتي",
+    "details": "name 'transcribe_audio' is not defined"
+  },
+  {
+    "timestamp": "2025-07-11 16:01:13",
+    "error_type": "AudioProcessing",
+    "message": "فشل معالجة الملف الصوتي",
+    "details": "لم يتم استخراج نص من الملف الصوتي"
+  },
+  {
+    "timestamp": "2025-07-11 16:07:07",
+    "error_type": "AudioProcessing",
+    "message": "فشل معالجة الملف الصوتي",
+    "details": "لم يتم استخراج نص من الملف الصوتي"
+  }
+]

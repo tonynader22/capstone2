@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Summary Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #fff;
+            font-size: 16px;
+        }
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+        textarea {
+            min-height: 120px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover, button:focus {
+            background-color: #ff0000;
+            border-color: #ff0000;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        #processBtn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            font-weight: bold;
+            background-color: rgba(255, 0, 0, 0.2);
+        }
+        .result {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid #333;
+        }
+        .result h2 {
+            margin-top: 0;
+            color: #fff;
+            border-bottom: 1px solid #fff;
+            padding-bottom: 10px;
+            text-align: center;
+            font-size: 24px;
+        }
+        #audioPreview {
+            margin-top: 15px;
+            width: 100%;
+            background: #000;
+        }
+        #capturedImage {
+            max-width: 100%;
+            margin-top: 15px;
+            border-radius: 6px;
+            display: none;
+            border: 1px solid #444;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #ff0000;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        .result-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            border-left: 3px solid #ff0000;
+        }
+        .result-section h3 {
+            color: #fff;
+            margin-top: 0;
+            font-size: 18px;
+            border-bottom: 1px dashed #fff;
+            padding-bottom: 8px;
+        }
+        .result-section p {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        .placeholder {
+            color: #aaa;
+            font-style: italic;
+            text-align: center;
+        }
+        .warning {
+            color: #ff9900 !important;
+            border-left-color: #ff9900 !important;
+        }
+        .error {
+            color: #ff3333 !important;
+            border-left-color: #ff3333 !important;
+        }
+        .input-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px dashed #444;
+        }
+        .input-section h3 {
+            margin-top: 0;
+            color: #fff;
+            font-size: 18px;
+        }
+        .model-loading {
+            color: #ff9900;
+            text-align: center;
+            margin: 15px 0;
+            font-style: italic;
+        }
+        progress {
+            width: 100%;
+            margin: 10px 0;
+            height: 10px;
+            border-radius: 5px;
+        }
+        progress::-webkit-progress-bar {
+            background-color: #333;
+            border-radius: 5px;
+        }
+        progress::-webkit-progress-value {
+            background-color: #ff0000;
+            border-radius: 5px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Summary Assistant</h1>
+
+        <!-- Language Selection -->
+        <div class="input-section">
+            <h3>Language Settings</h3>
+            <label for="targetLang">Select Summary Language:</label>
+            <select id="targetLang">
+                <option value="en">English</option>
+                <option value="ar">Arabic</option>
+            </select>
+
+            <div id="modelStatus" class="model-loading">Models are loaded on server</div>
+        </div>
+
+        <!-- Audio Section (Only) -->
+        <div class="input-section">
+            <h3>Audio Recording</h3>
+            <label>Record Audio:</label>
+            <div class="button-group">
+                <button id="recordBtn">Start Recording</button>
+                <button id="stopBtn" disabled>Stop Recording</button>
+            </div>
+            <audio id="audioPreview" controls style="display:none;"></audio>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="loading" id="loadingIndicator">
+            <div class="loading-spinner"></div>
+            <p>Processing your request...</p>
+            <progress id="uploadProgress" value="0" max="100" style="display:none;"></progress>
+        </div>
+
+        <!-- Process Button -->
+        <button id="processBtn">Generate Summary</button>
+
+        <!-- Results Section -->
+        <div class="result">
+            <h2>Results</h2>
+            <div id="outputText">
+                <div class="result-section">
+                    <h3>Original Text</h3>
+                    <p id="originalText" class="placeholder">No text available</p>
+                </div>
+                <div class="result-section">
+                    <h3>Summary</h3>
+                    <p id="summaryOutput" class="placeholder">No summary yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Audio Recording
+            let mediaRecorder;
+            let audioChunks = [];
+            const recordBtn = document.getElementById('recordBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const audioPreview = document.getElementById('audioPreview');
+
+            if (recordBtn && stopBtn && audioPreview) {
+                recordBtn.addEventListener('click', async () => {
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+                        mediaRecorder.start();
+
+                        recordBtn.disabled = true;
+                        stopBtn.disabled = false;
+                        audioChunks = [];
+
+                        mediaRecorder.ondataavailable = (e) => {
+                            audioChunks.push(e.data);
+                        };
+
+                        mediaRecorder.onstop = () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                            const audioUrl = URL.createObjectURL(audioBlob);
+                            audioPreview.src = audioUrl;
+                            audioPreview.style.display = 'block';
+                            // إيقاف جميع المسارات الصوتية
+                            stream.getTracks().forEach(track => track.stop());
+                        };
+                    } catch (error) {
+                        console.error('Error accessing microphone:', error);
+                        alert('Error accessing microphone: ' + error.message);
+                        recordBtn.disabled = false;
+                        stopBtn.disabled = true;
+                    }
+                });
+
+                stopBtn.addEventListener('click', () => {
+                    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                        mediaRecorder.stop();
+                        recordBtn.disabled = false;
+                        stopBtn.disabled = true;
+                    }
+                });
+            }
+
+            // Process Button
+            const processBtn = document.getElementById('processBtn');
+            if (processBtn) {
+                processBtn.addEventListener('click', async function() {
+                    const loadingIndicator = document.getElementById('loadingIndicator');
+                    const progressBar = document.getElementById('uploadProgress');
+                    const originalTextEl = document.getElementById('originalText');
+                    const summaryOutputEl = document.getElementById('summaryOutput');
+                    const targetLang = document.getElementById('targetLang').value;
+                    
+                    if (loadingIndicator) loadingIndicator.style.display = 'block';
+                    if (originalTextEl) originalTextEl.textContent = 'Processing...';
+                    if (summaryOutputEl) summaryOutputEl.textContent = 'Processing...';
+
+                    try {
+                        if (audioChunks.length === 0) {
+                            throw new Error('Please record audio first');
+                        }
+                                // تسجيل مباشر
+                                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const formData = new FormData();
+                                formData.append('file', audioBlob, 'recorded_audio.webm');
+                        formData.append('target_lang', targetLang);
+                            const response = await fetch('/process', {
+                                method: 'POST',
+                                body: formData
+                            });
+                            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+                            const data = await response.json();
+                            if (originalTextEl) originalTextEl.textContent = data.original_text || 'No text available';
+                            if (summaryOutputEl) summaryOutputEl.textContent = data.summary || 'No summary available';
+                    } catch (error) {
+                        console.error('Error:', error);
+                        if (originalTextEl) originalTextEl.textContent = 'Error occurred';
+                        if (summaryOutputEl) summaryOutputEl.textContent = error.message || 'Failed to process request';
+                    } finally {
+                        if (loadingIndicator) loadingIndicator.style.display = 'none';
+                        if (progressBar) progressBar.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

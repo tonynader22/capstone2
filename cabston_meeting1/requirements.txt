@@ -1,0 +1,10 @@
+flask
+flask_cors
+psutil
+requests
+langdetect
+faster-whisper
+onnxruntime
+pydub
+tiktoken
+werkzeug
